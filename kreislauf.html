@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f9">
+  <link rel="icon" href="data:,">
+  <title>Kreislauf entdecken · Anatomie ZASS</title>
+  <link rel="stylesheet" href="kreislauf.css?v=1">
+  <script src="vendor/lucide.min.js" defer></script>
+  <script type="module" src="kreislauf.js?v=1"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">ANATOMIE <span>ZASS</span></a>
+    <nav aria-label="Hauptnavigation"><a href="index.html"><i data-lucide="layers"></i>Karteikarten</a><a href="kreislauf.html" aria-current="page"><i data-lucide="heart-pulse"></i>Kreislauf entdecken</a></nav>
+  </header>
+  <main>
+    <div class="page-heading"><div><p class="eyebrow">HERZ · LUNGE · KÖRPER</p><h1>Kreislauf entdecken</h1></div><span class="source-badge">Skript 187–206</span></div>
+    <div class="mode-bar" role="tablist" aria-label="Lernmodus">
+      <button role="tab" id="tab-explore" aria-selected="true" data-mode="explore"><i data-lucide="scan-eye"></i>Anschauen</button>
+      <button role="tab" id="tab-guide" aria-selected="false" data-mode="guide"><i data-lucide="route"></i>Schritt für Schritt</button>
+      <button role="tab" id="tab-practice" aria-selected="false" data-mode="practice"><i data-lucide="graduation-cap"></i>Üben</button>
+    </div>
+    <div class="workspace">
+      <section class="visual" aria-label="Interaktives Kreislaufmodell">
+        <div class="visual-head"><span><span class="live-dot"></span>Blutkreislauf</span><button id="reset-view" class="icon-button" title="Ansicht zurücksetzen" aria-label="Ansicht zurücksetzen"><i data-lucide="maximize"></i></button></div>
+        <div id="mobile-context" class="mobile-context" aria-live="polite"></div>
+        <div id="scene"><canvas id="model" aria-label="Schematisches räumliches Modell von Herz, Lunge und Körperkreislauf"></canvas><div id="labels"></div><p id="scene-loading">Kreislauf wird geladen …</p><div id="fallback" hidden><img src="assets/slides/marked-20260912/page-206.jpg" alt="Schema von Lungen- und Körperkreislauf"><p>3D ist auf diesem Gerät nicht verfügbar. Alle Lerntexte und Übungen sind weiterhin nutzbar.</p></div></div>
+        <div class="legend"><span><b class="swatch red"></b>Sauerstoffreich</span><span><b class="swatch blue"></b>Sauerstoffarm</span></div>
+        <div class="scene-controls"><button id="play" class="icon-button" title="Animation pausieren" aria-label="Animation pausieren"><i data-lucide="pause"></i></button><label class="speed"><i data-lucide="gauge"></i><input type="range" id="speed" min="0.35" max="1.5" value="0.65" step="0.05" aria-label="Animationsgeschwindigkeit"></label><label class="toggle"><input type="checkbox" id="label-toggle" checked><span>Beschriftung</span></label><label class="toggle"><input type="checkbox" id="valve-toggle"><span>Klappen</span></label></div>
+        <p class="model-note">Schematische Vorderansicht. Die rechte Herzhälfte liegt links im Bild. Blau steht für wenig Sauerstoff; Blut ist nie blau.</p>
+      </section>
+      <section class="learning" aria-label="Lernbereich">
+        <div id="explore-panel" role="tabpanel" aria-labelledby="tab-explore">
+          <div class="segmented" aria-label="Kreislauf auswählen"><button data-circuit="all" aria-pressed="true">Gesamt</button><button data-circuit="body" aria-pressed="false">Körper</button><button data-circuit="lung" aria-pressed="false">Lunge</button></div>
+          <p class="section-label">STATION IM KREISLAUF</p><div id="detail"></div>
+          <div class="station-nav"><button id="station-prev" class="icon-button" aria-label="Vorherige Station" title="Vorherige Station"><i data-lucide="arrow-left"></i></button><span id="station-count"></span><button id="station-next" class="icon-button" aria-label="Nächste Station" title="Nächste Station"><i data-lucide="arrow-right"></i></button></div>
+          <div class="reference"><h3>Ein wichtiger Unterschied</h3><p><strong>Arterien</strong> führen Blut <strong>vom Herzen weg</strong>. <strong>Venen</strong> bringen es <strong>zum Herzen zurück</strong>.</p><p>Deshalb führen die Lungenarterien sauerstoffarmes Blut und die Lungenvenen sauerstoffreiches Blut.</p></div>
+        </div>
+        <div id="guide-panel" role="tabpanel" aria-labelledby="tab-guide" hidden><p class="section-label">MIT DEM BLUT DURCH DEN KÖRPER</p><h2>Ein ganzer Umlauf.</h2><p class="subtle">Von der linken Herzkammer bis zurück zum Herzen.</p><div class="step-progress"><span id="step-progress"></span></div><div id="guide-detail"></div><div class="guide-controls"><button id="guide-prev" class="secondary"><i data-lucide="arrow-left"></i>Zurück</button><button id="guide-next" class="primary">Weiter<i data-lucide="arrow-right"></i></button></div><ol id="step-list" class="step-list"></ol></div>
+        <div id="practice-panel" role="tabpanel" aria-labelledby="tab-practice" hidden><div class="practice-top"><h2>Dein Wissen.</h2><span id="practice-score"></span></div><div class="segmented" aria-label="Übung auswählen"><button data-exercise="find" aria-pressed="true">Zuordnen</button><button data-exercise="order" aria-pressed="false">Blutweg</button><button data-exercise="speak" aria-pressed="false">Erklären</button></div><div id="exercise"></div></div>
+      </section>
+    </div>
+    <footer class="footer"><span>Grundlagen nach deinen Skriptseiten 187–206.</span><a href="https://www.gesundheitsinformation.de/wie-funktioniert-das-herz.html" target="_blank" rel="noopener noreferrer">Fachlicher Abgleich: IQWiG<i data-lucide="arrow-up-right"></i></a></footer>
+  </main>
+</body>
+</html>

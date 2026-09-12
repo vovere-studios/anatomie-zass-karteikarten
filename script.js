@@ -2652,13 +2652,39 @@ elements.topicSelect.addEventListener("change", (event) => {
 });
 
 window.addEventListener("keydown", (event) => {
-  if (event.target.matches("input, select")) return;
+  if (event.target.closest("input, select, button, a")) return;
   if (event.key === "ArrowLeft") move(-1);
   if (event.key === "ArrowRight") move(1);
   if (event.key === " " || event.key === "Enter") {
     event.preventDefault();
     flip();
   }
+});
+
+// Keep the exact card position when visiting the independent circulation page.
+try {
+  const saved = JSON.parse(sessionStorage.getItem("anatomie-zass-reading-position") || "null");
+  if (saved && Object.hasOwn(deckLabels, saved.deck)) {
+    state.deck = saved.deck;
+    state.query = typeof saved.query === "string" ? saved.query : "";
+    state.topic = typeof saved.topic === "string" ? saved.topic : "Alle";
+    state.flipped = saved.flipped === true;
+    if (Array.isArray(saved.order)) {
+      state.order = [...new Set([...saved.order.filter((id) => cardIds.has(id)), ...state.order])];
+    }
+    elements.searchInput.value = state.query;
+    renderTopics();
+    state.currentIndex = Math.max(0, getVisibleCards().findIndex((card) => card.id === saved.currentId));
+  }
+} catch { /* A missing or unavailable session store must not block learning. */ }
+
+window.addEventListener("pagehide", () => {
+  try {
+    sessionStorage.setItem("anatomie-zass-reading-position", JSON.stringify({
+      deck: state.deck, query: state.query, topic: state.topic, order: state.order,
+      flipped: state.flipped, currentId: getVisibleCards()[state.currentIndex]?.id
+    }));
+  } catch { /* Card learning marks still use the existing persistent store. */ }
 });
 
 renderTopics();
