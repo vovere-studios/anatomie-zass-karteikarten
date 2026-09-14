@@ -2307,6 +2307,7 @@ const savedLearned = Array.from(new Set(
 const savedDeck = localStorage.getItem("anatomie-zass-deck");
 
 const state = {
+  circulationVersion: localStorage.getItem("anatomie-zass-circulation-version") === "short" ? "short" : "original",
   order: cards.map((card) => card.id),
   currentIndex: 0,
   flipped: false,
@@ -2347,6 +2348,12 @@ function byId(id) {
   return cards.find((card) => card.id === id);
 }
 
+function displayCard(card) {
+  return state.circulationVersion === "short" && card.deck === "circulation"
+    ? { ...card, ...nerveCirculationShort[card.id] }
+    : card;
+}
+
 function normalize(value) {
   return value.toLocaleLowerCase("de-AT");
 }
@@ -2372,6 +2379,7 @@ function getVisibleCards() {
     .filter((card) => state.topic === "Alle" || card.topic === state.topic)
     .filter((card) => {
       if (!query) return true;
+      card = displayCard(card);
       const haystack = normalize([
         card.question,
         card.topic,
@@ -2426,6 +2434,7 @@ function escapeHtml(value) {
 }
 
 function renderAnswer(card) {
+  card = displayCard(card);
   const lines = card.answer
     .map((line) => `<span class="answer-line">${escapeHtml(line)}</span>`)
     .join("");
@@ -2449,6 +2458,7 @@ function renderAnswer(card) {
 }
 
 function renderQuestion(card) {
+  card = displayCard(card);
   return `<span>${escapeHtml(card.question)}</span>`;
 }
 
@@ -2474,7 +2484,7 @@ function renderCardList(visibleCards) {
         <button class="list-item${active}${known}" type="button" data-index="${index}">
           <span class="list-item-number">${getCardNumber(card)}</span>
           <span class="list-item-copy">
-            <span class="list-item-title">${escapeHtml(card.question)}</span>
+            <span class="list-item-title">${escapeHtml(displayCard(card).question)}</span>
             <span class="list-item-meta">Karte ${getCardNumber(card)} · Skriptseite ${card.scriptPage} · ${escapeHtml(card.topic)}</span>
           </span>
         </button>
@@ -2492,6 +2502,10 @@ function renderCardList(visibleCards) {
 }
 
 function render() {
+  document.querySelector("#circulationVersions").hidden = !["circulation", "all"].includes(state.deck);
+  document.querySelectorAll("[data-version]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.version === state.circulationVersion));
+  });
   const visibleCards = getVisibleCards();
   if (state.currentIndex >= visibleCards.length) state.currentIndex = 0;
 
@@ -2520,6 +2534,7 @@ function render() {
   elements.progressBar.style.width = `${percent}%`;
   elements.cardMeta.textContent = `Karte ${getCardNumber(card)} · ${card.topic} · Skriptseite ${card.scriptPage} · ${deckLabels[getCardDeck(card)]}`;
   elements.cardLabel.textContent = state.flipped ? "Lösung" : "Frage";
+  if (card.deck === "circulation") elements.cardLabel.textContent += state.circulationVersion === "short" ? " · 2.0" : " · Original";
   elements.cardContent.innerHTML = state.flipped ? renderAnswer(card) : renderQuestion(card);
   elements.flashcard.classList.toggle("is-answer", state.flipped);
   elements.sourceMeta.textContent = `Skriptseite ${card.scriptPage}`;
@@ -2595,7 +2610,7 @@ function toCsvValue(value) {
 }
 
 function exportCsv() {
-  const exportCards = getVisibleCards();
+  const exportCards = getVisibleCards().map(displayCard);
   const header = ["Frage", "Lösung", "Skriptseite", "Thema", "Lernpaket", "Begriffe einfach erklärt"];
   const rows = exportCards.map((card) => [
     card.question,
@@ -2612,7 +2627,7 @@ function exportCsv() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `anatomie-zass-karteikarten-${state.deck}-skriptseiten-64-206.csv`;
+  link.download = `anatomie-zass-karteikarten-${state.deck}${["circulation", "all"].includes(state.deck) ? (state.circulationVersion === "short" ? "-2.0" : "-original") : ""}-skriptseiten-64-206.csv`;
   document.body.append(link);
   link.click();
   link.remove();
@@ -2627,6 +2642,15 @@ elements.knownButton.addEventListener("click", toggleKnown);
 elements.shuffleButton.addEventListener("click", shuffle);
 elements.resetButton.addEventListener("click", resetOrder);
 elements.exportButton.addEventListener("click", exportCsv);
+document.querySelectorAll("[data-version]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const currentId = getVisibleCards()[state.currentIndex]?.id;
+    state.circulationVersion = button.dataset.version;
+    localStorage.setItem("anatomie-zass-circulation-version", state.circulationVersion);
+    state.currentIndex = Math.max(0, getVisibleCards().findIndex((card) => card.id === currentId));
+    render();
+  });
+});
 elements.deckTabs.forEach((button) => {
   button.addEventListener("click", () => {
     state.deck = button.dataset.deck;

@@ -5,7 +5,7 @@
     <link rel="icon" href="data:,">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Karteikarten Anatomie ZASS 2026</title>
-    <link rel="stylesheet" href="style.css?v=20260912-circuit">
+    <link rel="stylesheet" href="style.css?v=20260914-short">
   </head>
   <body>
     <nav class="site-navigation" aria-label="Hauptnavigation">
@@ -34,6 +34,14 @@
           <button class="deck-tab" type="button" data-deck="brain">Gehirn &amp; Nervenzellen</button>
           <button class="deck-tab" type="button" data-deck="circulation">Nerven &amp; Kreislauf</button>
           <button class="deck-tab" type="button" data-deck="all">Alle Karten</button>
+        </div>
+
+        <div id="circulationVersions" class="version-picker" hidden>
+          <span>Nerven &amp; Kreislauf</span>
+          <div class="version-segments" role="group" aria-label="Version für Nerven und Kreislauf">
+            <button type="button" data-version="original" aria-pressed="true">Original</button>
+            <button type="button" data-version="short" aria-pressed="false">2.0</button>
+          </div>
         </div>
 
         <div class="toolbar">
@@ -84,6 +92,7 @@
     </main>
 
     <script src="new-cards.js?v=20260912" defer></script>
-<script src="script.js?v=20260912-circuit" defer></script>
+    <script src="short-cards.js?v=20260914-short" defer></script>
+    <script src="script.js?v=20260914-short" defer></script>
   </body>
 </html>
