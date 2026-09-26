@@ -2030,12 +2030,14 @@ const cards = [
 ];
 
 cards.push(...nerveCirculationCards);
+cards.push(...breathDigestionCards);
 
 const deckCounts = {
   old: cards.filter((card) => card.deck === "old").length,
   new: cards.filter((card) => card.deck === "new").length,
   brain: cards.filter((card) => card.deck === "brain").length,
   circulation: cards.filter((card) => card.deck === "circulation").length,
+  breathDigestion: cards.filter((card) => card.deck === "breathDigestion").length,
   all: cards.length
 };
 
@@ -2044,6 +2046,7 @@ const deckLabels = {
   new: `Blut, Knochen & Muskeln · ${deckCounts.new} Karten`,
   brain: `Gehirn & Nervenzellen · ${deckCounts.brain} Karten`,
   circulation: `Nerven & Kreislauf · ${deckCounts.circulation} Karten`,
+  breathDigestion: `Atmung & Verdauung · ${deckCounts.breathDigestion} Karten`,
   all: `Alle ${deckCounts.all} Karten`
 };
 
@@ -2052,6 +2055,7 @@ const deckButtonLabels = {
   new: `Blut, Knochen & Muskeln · ${deckCounts.new}`,
   brain: `Gehirn & Nervenzellen · ${deckCounts.brain}`,
   circulation: `Nerven & Kreislauf · ${deckCounts.circulation}`,
+  breathDigestion: `Atmung & Verdauung · ${deckCounts.breathDigestion}`,
   all: `Alle ${deckCounts.all}`
 };
 
@@ -2393,7 +2397,11 @@ function getVisibleCards() {
 }
 
 function getGlossaryEntries(card) {
-  const definitions = card.deck === "circulation" ? { ...glossary, ...nerveCirculationGlossary } : glossary;
+  const definitions = card.deck === "circulation"
+    ? { ...glossary, ...nerveCirculationGlossary }
+    : card.deck === "breathDigestion"
+      ? { ...glossary, ...breathDigestionGlossary }
+      : glossary;
   const explicitTerms = card.terms || [];
   const topicFallbacks = {
     "Abbildungen": [],
@@ -2512,6 +2520,10 @@ function render() {
   const total = visibleCards.length;
   const card = visibleCards[state.currentIndex];
 
+  elements.deckTabs.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.deck === state.deck);
+  });
+
   if (!card) {
     elements.counter.textContent = "0 / 0";
     elements.progressBar.style.width = "0%";
@@ -2548,10 +2560,6 @@ function render() {
   elements.knownButton.classList.toggle("is-known", isKnown);
   elements.knownButton.textContent = isKnown ? "Gemerkt" : "Merken";
   elements.learnedCount.textContent = `${getKnownCount()} / ${getDeckCards().length} gemerkt`;
-  elements.deckTabs.forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.deck === state.deck);
-  });
-
   renderCardList(visibleCards);
 }
 
@@ -2627,7 +2635,7 @@ function exportCsv() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `anatomie-zass-karteikarten-${state.deck}${["circulation", "all"].includes(state.deck) ? (state.circulationVersion === "short" ? "-2.0" : "-original") : ""}-skriptseiten-64-206.csv`;
+  link.download = `anatomie-zass-karteikarten-${state.deck}${["circulation", "all"].includes(state.deck) ? (state.circulationVersion === "short" ? "-2.0" : "-original") : ""}-skriptseiten-64-254.csv`;
   document.body.append(link);
   link.click();
   link.remove();

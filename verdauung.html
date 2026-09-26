@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8f6">
+  <link rel="icon" href="data:,">
+  <title>Verdauung entdecken · Anatomie ZASS</title>
+  <link rel="stylesheet" href="verdauung.css?v=1">
+  <script src="vendor/lucide.min.js" defer></script>
+  <script type="module" src="verdauung.js?v=1"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">ANATOMIE <span>ZASS</span></a>
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html"><i data-lucide="layers"></i>Karteikarten</a>
+      <a href="kreislauf.html"><i data-lucide="heart-pulse"></i>Kreislauf entdecken</a>
+      <a href="verdauung.html" aria-current="page"><i data-lucide="scan-eye"></i>Verdauung entdecken</a>
+    </nav>
+  </header>
+  <main>
+    <div class="heading"><div><p class="eyebrow">SKRIPTSEITEN 244–254</p><h1>Verdauungstrakt</h1></div><a class="back-link" href="index.html">Zu den Karteikarten<i data-lucide="arrow-up-right"></i></a></div>
+    <div class="mode-bar" role="tablist" aria-label="Lernmodus">
+      <button type="button" role="tab" data-mode="explore" aria-selected="true"><i data-lucide="scan-eye"></i>Anschauen</button>
+      <button type="button" role="tab" data-mode="guide" aria-selected="false"><i data-lucide="route"></i>Schritt für Schritt</button>
+      <button type="button" role="tab" data-mode="practice" aria-selected="false"><i data-lucide="graduation-cap"></i>Üben</button>
+    </div>
+    <div class="workspace">
+      <section class="visual" aria-label="Interaktives 3D-Modell des Verdauungstrakts">
+        <div class="visual-head"><span><span class="live-dot"></span>Weg der Nahrung</span><button id="reset-view" class="icon-button" type="button" title="Ansicht zurücksetzen" aria-label="Ansicht zurücksetzen"><i data-lucide="maximize"></i></button></div>
+        <div id="scene"><canvas id="model" aria-label="Drehbares schematisches 3D-Modell des Verdauungstrakts"></canvas><div id="labels"></div><p id="scene-loading">Modell wird geladen …</p><div id="fallback" hidden><img src="assets/slides/marked-20260926/page-247.jpg" alt="Organe des Verdauungstrakts auf Skriptseite 247"><p>Das 3D-Modell ist hier nicht verfügbar. Der Lernweg und die Übungen funktionieren weiterhin.</p></div></div>
+        <div class="visual-controls"><button id="play" class="icon-button" type="button" title="Bewegung pausieren" aria-label="Bewegung pausieren"><i data-lucide="pause"></i></button><label class="toggle"><input id="label-toggle" type="checkbox" checked>Beschriftung</label><span class="visual-hint">Ziehen zum Drehen</span></div>
+        <p class="model-note">Schematische Vorderansicht. Organe sind zur Übersicht vereinfacht; Leber, Gallenblase und Bauchspeicheldrüse liegen neben dem Weg der Nahrung.</p>
+      </section>
+      <section class="learning" aria-label="Erklärungen und Übungen">
+        <div id="explore-panel" role="tabpanel">
+          <p class="section-label">ORGAN AUSWÄHLEN</p>
+          <div id="station-picks" class="station-picks"></div>
+          <div id="detail" aria-live="polite"></div>
+          <div class="station-nav"><button id="station-prev" class="icon-button" type="button" aria-label="Vorheriges Organ"><i data-lucide="arrow-left"></i></button><span id="station-count"></span><button id="station-next" class="icon-button" type="button" aria-label="Nächstes Organ"><i data-lucide="arrow-right"></i></button></div>
+        </div>
+        <div id="guide-panel" role="tabpanel" hidden>
+          <p class="section-label">MIT DER NAHRUNG DURCH DEN KÖRPER</p>
+          <div class="step-track"><span id="step-progress"></span></div>
+          <div id="guide-detail" aria-live="polite"></div>
+          <div class="guide-controls"><button id="guide-prev" class="secondary" type="button"><i data-lucide="arrow-left"></i>Zurück</button><button id="guide-next" class="primary" type="button">Weiter<i data-lucide="arrow-right"></i></button></div>
+          <ol id="step-list" class="step-list"></ol>
+        </div>
+        <div id="practice-panel" role="tabpanel" hidden>
+          <div class="practice-head"><h2>Üben</h2><span id="practice-score"></span></div>
+          <div class="segmented" aria-label="Übung auswählen"><button type="button" data-exercise="order" aria-pressed="true">Reihenfolge</button><button type="button" data-exercise="speak" aria-pressed="false">Mündlich erklären</button></div>
+          <div id="exercise"></div>
+        </div>
+      </section>
+    </div>
+    <footer><span>Nach dem markierten Skript, Seiten 245–254.</span><a href="https://www.niddk.nih.gov/health-information/digestive-diseases/digestive-system-how-it-works" target="_blank" rel="noopener noreferrer">Fachlicher Abgleich: NIDDK<i data-lucide="arrow-up-right"></i></a></footer>
+  </main>
+</body>
+</html>
