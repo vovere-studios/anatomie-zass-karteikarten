@@ -2428,7 +2428,7 @@ function getGlossaryEntries(card) {
       seen.add(key);
       return true;
     })
-    .slice(0, 4)
+    .slice(0, card.deck === "breathDigestion" ? 5 : 4)
     .map((term) => ({ term, text: definitions[term] }));
 }
 
