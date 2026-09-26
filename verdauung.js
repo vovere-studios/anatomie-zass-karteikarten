@@ -1,4 +1,4 @@
-import { createDigestionScene } from './verdauung-scene.js';
+import { createDigestionScene } from './verdauung-scene.js?v=2';
 
 const $ = selector => document.querySelector(selector);
 const icons = () => window.lucide?.createIcons();
